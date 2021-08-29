@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +13,12 @@ import java.util.stream.Collectors;
 
 public class IOC {
 
-    public static final Map<String, Double> indexesByLanguage =
+    private static final Map<String, Double> indexesByLanguage =
             Map.ofEntries(Map.entry("pt-BR", 0.074), Map.entry("en-US", 0.066));
+
+    public static double getIndexByLanguage(String language){
+        return indexesByLanguage.get(language);
+    }
 
     public static double computeIndexOfCoincidence(byte[] textBytes) {
         Map<Character, Long> charOccurrences = new HashMap<>();

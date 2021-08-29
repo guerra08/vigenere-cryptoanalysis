@@ -19,4 +19,18 @@ public class IOCTests {
         assertTrue(value > 0.0);
     }
 
+    @Test
+    void shouldReturnTableIndexForPtBr(){
+        double value = IOC.getIndexByLanguage("pt-BR");
+
+        assertEquals(0.074, value);
+    }
+
+    @Test
+    void shouldReturnTableIndexForEnUs(){
+        double value = IOC.getIndexByLanguage("en-US");
+
+        assertEquals(0.066, value);
+    }
+
 }
