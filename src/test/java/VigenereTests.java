@@ -18,10 +18,7 @@ public class VigenereTests {
                 key.getBytes(StandardCharsets.UTF_8)
         );
 
-        System.out.println(encText);
-        System.out.println(new String(encryptedText));
-
-        assertEquals(encText.getBytes(StandardCharsets.UTF_8), encryptedText);
+        assertEquals(encText, new String(encryptedText));
     }
 
 }

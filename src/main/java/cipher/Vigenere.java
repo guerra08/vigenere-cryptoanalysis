@@ -34,7 +34,7 @@ public class Vigenere {
             if(i == key.length - 1){
                 i = 0;
             }
-            if(j == size - 1){
+            if(j == size){
                 break;
             }
             genKey[j] = key[i];
