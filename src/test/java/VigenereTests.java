@@ -21,4 +21,14 @@ public class VigenereTests {
         assertEquals(encText, new String(encryptedText));
     }
 
+    @Test
+    void shouldDecryptText(){
+        byte[] decryptedText = Vigenere.decryptText(
+                encText.getBytes(StandardCharsets.UTF_8),
+                key.getBytes(StandardCharsets.UTF_8)
+        );
+
+        assertEquals(rawText, new String(decryptedText));
+    }
+
 }

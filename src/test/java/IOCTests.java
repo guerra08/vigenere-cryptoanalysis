@@ -1,3 +1,4 @@
+import org.apache.commons.math3.util.Precision;
 import org.junit.jupiter.api.Test;
 import processing.IOC;
 
@@ -9,14 +10,18 @@ public class IOCTests {
     void shouldReturnIndexOfCoincidenceForEnUsTextFile(){
         double value = IOC.computeIndexOfCoincidence("cifradoEnUs.txt");
 
-        assertTrue(value > 0.0);
+        double rounded = Precision.round(value, 2);
+
+        assertEquals(0.04, rounded);
     }
 
     @Test
     void shouldReturnIndexOfCoincidenceForPtBrTextFile(){
         double value = IOC.computeIndexOfCoincidence("cifradoPtBr.txt");
 
-        assertTrue(value > 0.0);
+        double rounded = Precision.round(value, 2);
+
+        assertEquals(0.05, rounded);
     }
 
     @Test
