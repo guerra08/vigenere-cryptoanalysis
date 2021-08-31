@@ -1,3 +1,5 @@
+package unit;
+
 import cipher.Vigenere;
 import org.junit.jupiter.api.Test;
 
