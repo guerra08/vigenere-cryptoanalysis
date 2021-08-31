@@ -1,10 +1,8 @@
 package unit;
 
 import cipher.Friedman;
+import dto.FriedmanDTO;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,28 +10,37 @@ public class FriedmanTests {
 
     @Test
     void shouldResultInKeyLengthOf7ForEnUs(){
-        Map.Entry<Integer, List<String>> result = Friedman.computeKeyLength("cifradoEnUs.txt");
+        FriedmanDTO result = Friedman.computeFriedman("cifradoEnUs.txt");
 
         assert result != null;
 
-        assertEquals(7, result.getKey());
+        assertEquals(7, result.getKeyLength());
     }
 
     @Test
     void shouldResultInKeyLengthOf7ForPtBr(){
-        Map.Entry<Integer, List<String>> result = Friedman.computeKeyLength("cifradoPtBr.txt");
+        FriedmanDTO result = Friedman.computeFriedman("cifradoPtBr.txt");
 
         assert result != null;
 
-        assertEquals(7, result.getKey());
+        assertEquals(7, result.getKeyLength());
     }
 
     @Test
     void shouldResultInKeyLengthOf8ForCipher1(){
-        Map.Entry<Integer, List<String>> result = Friedman.computeKeyLength("cipher1.txt");
+        FriedmanDTO result = Friedman.computeFriedman("cipher1.txt");
 
         assert result != null;
 
-        assertEquals(8, result.getKey());
+        assertEquals(8, result.getKeyLength());
+    }
+
+    @Test
+    void shouldResultInKeyLengthOf8ForCipher2(){
+        FriedmanDTO result = Friedman.computeFriedman("cipher2.txt");
+
+        assert result != null;
+
+        assertEquals(5, result.getKeyLength());
     }
 }

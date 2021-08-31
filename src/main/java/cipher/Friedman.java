@@ -1,6 +1,7 @@
 package cipher;
 
 import com.google.common.primitives.Bytes;
+import dto.FriedmanDTO;
 import processing.IOC;
 import utils.FileReader;
 
@@ -15,7 +16,7 @@ public class Friedman {
     private static final int MAX_LENGTH = 20;
     private static final double THRESHOLD = 0.005;
 
-    public static Map.Entry<Integer, List<String>> computeKeyLength(byte[] text) {
+    public static FriedmanDTO computeFriedman(byte[] text) {
 
         List<Byte> substrBytes = new ArrayList<>();
         int JUMP_INCREMENT = 2;
@@ -31,30 +32,33 @@ public class Friedman {
                 substrings.add(new String(Bytes.toArray(substrBytes)));
                 substrBytes = new ArrayList<>();
             }
-            if(isLengthAdequate(indexesOfCoincidence))
-                return Map.entry(JUMP_INCREMENT, substrings);
+            String language = checkIndexesByLanguages(indexesOfCoincidence);
+            if(language != null)
+                return new FriedmanDTO(JUMP_INCREMENT, substrings, language);
             JUMP_INCREMENT++;
         }
 
         return null;
     }
 
-    public static Map.Entry<Integer, List<String>> computeKeyLength(String filePath) {
+    public static FriedmanDTO computeFriedman(String filePath) {
         try {
             File textFile = FileReader.getFileFromResourcesFolder(filePath);
-            return computeKeyLength(Files.readAllBytes(textFile.toPath()));
+            return computeFriedman(Files.readAllBytes(textFile.toPath()));
         } catch (IOException | URISyntaxException e) {
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
         return null;
     }
 
-    private static boolean isLengthAdequate(List<Double> indexesOfCoincidence) {
+    private static String checkIndexesByLanguages(List<Double> indexesOfCoincidence) {
         for (Double value : indexesOfCoincidence) {
-            if (IOC.getIndexByLanguage("pt-BR") - value <= THRESHOLD || IOC.getIndexByLanguage("en-US") - value <= THRESHOLD)
-                return true;
+            if (IOC.getIndexByLanguage("pt-BR") - value <= THRESHOLD)
+                return "pt-BR";
+            else if (IOC.getIndexByLanguage("en-US") - value <= THRESHOLD)
+                return "en-US";
         }
-        return false;
+        return null;
     }
 
 }
