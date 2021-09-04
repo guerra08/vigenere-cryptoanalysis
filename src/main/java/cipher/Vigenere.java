@@ -7,9 +7,18 @@ public class Vigenere {
         int size = rawText.length;
         byte[] encrypted = new byte[size];
         for(int i = 0; i < size; i++){
-            char c = (char)((rawText[i] + generatedKey[i]) % 26);
-            c += 'A';
-            encrypted[i] = (byte) c;
+            char keyChar = (char) generatedKey[i];
+            char textChar = (char) rawText[i];
+            char result;
+            if(Character.isUpperCase(textChar)){
+                result = (char)((textChar + Character.toUpperCase(keyChar) - 2 * 'A') % 26);
+                result += 'A';
+            }
+            else{
+                result = (char)((textChar + Character.toLowerCase(keyChar) - 2 * 'a') % 26);
+                result += 'a';
+            }
+            encrypted[i] = (byte) result;
         }
         return encrypted;
     }
@@ -19,9 +28,15 @@ public class Vigenere {
         int size = encText.length;
         byte[] decrypted = new byte[size];
         for(int i = 0; i < size; i++){
-            char c = (char)((encText[i] - generatedKey[i] + 26) % 26);
-            c += 'A';
-            decrypted[i] = (byte) c;
+            char keyChar = (char) generatedKey[i];
+            char textChar = (char) encText[i];
+            char result;
+            if(Character.isUpperCase(textChar))
+                result = (char) ('Z' - (25 - (textChar - Character.toUpperCase(keyChar)) % 26));
+            else{
+                result = (char) ('z' - (25 - (textChar - Character.toLowerCase(keyChar))) % 26);
+            }
+            decrypted[i] = (byte) result;
         }
         return decrypted;
     }

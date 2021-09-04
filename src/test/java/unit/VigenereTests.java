@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class VigenereTests {
 
-    public String rawText = "TEST";
-    public String key = "MYHERO";
-    public String encText = "FCZX";
+    public String rawText = "test";
+    public String key = "myhero";
+    public String encText = "fczx";
 
     @Test
     void shouldEncryptText(){
