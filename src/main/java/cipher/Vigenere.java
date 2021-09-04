@@ -1,5 +1,11 @@
 package cipher;
 
+import com.google.common.primitives.Bytes;
+import processing.General;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Vigenere {
 
     public static byte[] encryptText(byte[] rawText, byte[] key){
@@ -41,18 +47,19 @@ public class Vigenere {
         return decrypted;
     }
 
-    public static byte[] decryptKey(byte[] original, byte mostCommonChar){
-        int difference = mostCommonChar - 101;
-        byte[] decryptedKey = new byte[original.length];
-
-        for (int i = 0; i < original.length; i++) {
-            byte b = (byte) ((original[i] - difference));
-            if(b < 97)
-                b = (byte) (122 - (97 - b));
-            decryptedKey[i] = b;
+    public static byte[] crackText(byte[] encText, String language, int keyLength){
+        int mostCommonCharOfLanguage = (language.equals("pt-BR")) ? 97 : 101;
+        byte[] crackedText = new byte[encText.length];
+        for (int i = 0; i < keyLength; i++) {
+            List<Byte> bytesOfSubstr = new ArrayList<>();
+            for (int j = i; j < encText.length; j+=keyLength) {
+                bytesOfSubstr.add(encText[j]);
+            }
+            byte mostCommonCharOfSubstr = General.getMostCommonCharInText(new String(Bytes.toArray(bytesOfSubstr)));
+            int difference = mostCommonCharOfSubstr - mostCommonCharOfLanguage;
+            boolean a = true;
         }
-
-        return decryptedKey;
+        return crackedText;
     }
 
     private static byte[] generateKey(int size, byte[] key){

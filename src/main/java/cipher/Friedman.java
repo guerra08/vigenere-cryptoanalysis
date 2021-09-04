@@ -22,19 +22,17 @@ public class Friedman {
         int JUMP_INCREMENT = 2;
         for(int i = 0; i < MAX_LENGTH; i++){
             List<Double> indexesOfCoincidence = new ArrayList<>();
-            List<String> substrings = new ArrayList<>();
             for (int startingIndex = 0; startingIndex < JUMP_INCREMENT; startingIndex++) {
                 for (int j = startingIndex; j < text.length; j += JUMP_INCREMENT) {
                     substrBytes.add(text[j]);
                 }
                 double indexOfCoincidence = IOC.computeIndexOfCoincidence(Bytes.toArray(substrBytes));
                 indexesOfCoincidence.add(indexOfCoincidence);
-                substrings.add(new String(Bytes.toArray(substrBytes)));
                 substrBytes = new ArrayList<>();
             }
             String language = checkIndexesByLanguages(indexesOfCoincidence);
             if(language != null)
-                return new FriedmanDTO(JUMP_INCREMENT, substrings, language);
+                return new FriedmanDTO(JUMP_INCREMENT, language);
             JUMP_INCREMENT++;
         }
 
