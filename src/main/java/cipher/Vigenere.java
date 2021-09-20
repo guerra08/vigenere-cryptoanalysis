@@ -1,12 +1,16 @@
 package cipher;
 
 import com.google.common.primitives.Bytes;
+import dto.FriedmanDTO;
 import processing.General;
+import processing.IOC;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Vigenere {
+
+    private static final double THRESHOLD = 0.008;
 
     public static byte[] encryptText(byte[] rawText, byte[] key){
         byte[] generatedKey = generateKey(rawText.length, key);
@@ -47,8 +51,9 @@ public class Vigenere {
         return decrypted;
     }
 
-    public static byte[] crackText(byte[] encText, String language, int keyLength){
-        int mostCommonCharOfLanguage = (language.equals("pt-BR")) ? 97 : 101;
+    public static byte[] crackText(byte[] encText, FriedmanDTO friedman){
+        int keyLength = friedman.getKeyLength();
+        byte baseChar = (byte) 'e';
         byte[] crackedText = new byte[encText.length];
         for (int i = 0; i < keyLength; i++) {
             List<Byte> bytesOfSubstr = new ArrayList<>();
@@ -56,8 +61,14 @@ public class Vigenere {
                 bytesOfSubstr.add(encText[j]);
             }
             byte mostCommonCharOfSubstr = General.getMostCommonCharInText(new String(Bytes.toArray(bytesOfSubstr)));
-            int difference = mostCommonCharOfSubstr - mostCommonCharOfLanguage;
-            boolean a = true;
+            int difference = mostCommonCharOfSubstr - baseChar;
+            for (int j = i, k = 0; j < encText.length && k < bytesOfSubstr.size(); j+=keyLength, k++) {
+                int crackedInt = bytesOfSubstr.get(k) - difference;
+                if(crackedInt >= 'a' && crackedInt <= 'z')
+                    crackedText[j] = (byte) (bytesOfSubstr.get(k) - difference);
+                else if(crackedInt < 'a')
+                    crackedText[j] = (byte) (crackedInt + 'z' - 'a' + 1);
+            }
         }
         return crackedText;
     }

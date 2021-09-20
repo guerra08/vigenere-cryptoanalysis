@@ -3,12 +3,10 @@ package cipher;
 import com.google.common.primitives.Bytes;
 import dto.FriedmanDTO;
 import processing.IOC;
-import utils.FileReader;
+import utils.Reader;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.util.*;
 
 public class Friedman {
@@ -17,10 +15,10 @@ public class Friedman {
     private static final double THRESHOLD = 0.005;
 
     public static FriedmanDTO computeFriedman(byte[] text) {
-
         List<Byte> substrBytes = new ArrayList<>();
+        Map<Integer, List<Double>> iocByKeySize = new HashMap<>();
         int JUMP_INCREMENT = 2;
-        for(int i = 0; i < MAX_LENGTH; i++){
+        for (int i = 0; i < MAX_LENGTH; i++) {
             List<Double> indexesOfCoincidence = new ArrayList<>();
             for (int startingIndex = 0; startingIndex < JUMP_INCREMENT; startingIndex++) {
                 for (int j = startingIndex; j < text.length; j += JUMP_INCREMENT) {
@@ -30,31 +28,42 @@ public class Friedman {
                 indexesOfCoincidence.add(indexOfCoincidence);
                 substrBytes = new ArrayList<>();
             }
-            String language = checkIndexesByLanguages(indexesOfCoincidence);
-            if(language != null)
-                return new FriedmanDTO(JUMP_INCREMENT, language);
+            iocByKeySize.put(JUMP_INCREMENT, indexesOfCoincidence);
             JUMP_INCREMENT++;
         }
-
-        return null;
+        return computeAndBuildFriedmanDto(iocByKeySize);
     }
 
     public static FriedmanDTO computeFriedman(String filePath) {
         try {
-            File textFile = FileReader.getFileFromResourcesFolder(filePath);
-            return computeFriedman(Files.readAllBytes(textFile.toPath()));
+            byte[] bytes = Reader.readFileFromResourcesFolder(filePath);
+            return computeFriedman(bytes);
         } catch (IOException | URISyntaxException e) {
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
         return null;
     }
 
-    private static String checkIndexesByLanguages(List<Double> indexesOfCoincidence) {
-        for (Double value : indexesOfCoincidence) {
-            if (IOC.getIndexByLanguage("pt-BR") - value <= THRESHOLD)
-                return "pt-BR";
-            else if (IOC.getIndexByLanguage("en-US") - value <= THRESHOLD)
-                return "en-US";
+    private static FriedmanDTO computeAndBuildFriedmanDto(Map<Integer, List<Double>> iocByKeySize) {
+        String language = null;
+        Map<Integer, Double> iocByKeySizes = new LinkedHashMap<>();
+        for (Map.Entry<Integer, List<Double>> entry : iocByKeySize.entrySet()) {
+            for (Double value : entry.getValue()) {
+                double diffPtBr = IOC.getIndexByLanguage("pt-BR") - value;
+                double diffEnUs = IOC.getIndexByLanguage("en-US") - value;
+                if (diffPtBr <= THRESHOLD){
+                    language = "pt-BR";
+                    iocByKeySizes.put(entry.getKey(), value);
+                }
+                else if (diffEnUs <= THRESHOLD){
+                    language = "en-US";
+                    iocByKeySizes.put(entry.getKey(), value);
+                }
+            }
+        }
+        if(language != null){
+            Map.Entry<Integer, Double> entry = iocByKeySizes.entrySet().iterator().next();
+            return new FriedmanDTO(entry.getKey(), language, entry.getValue());
         }
         return null;
     }

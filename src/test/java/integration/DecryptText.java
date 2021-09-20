@@ -4,12 +4,10 @@ import cipher.Friedman;
 import cipher.Vigenere;
 import dto.FriedmanDTO;
 import org.junit.jupiter.api.Test;
-import utils.FileReader;
+import utils.Reader;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,18 +15,32 @@ public class DecryptText {
 
     @Test
     void shouldDecryptCifradoEnUs() throws IOException, URISyntaxException {
+        byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cifradoEnUs.txt");
 
-        File f = FileReader.getFileFromResourcesFolder("cifradoEnUs.txt");
-        byte[] fileBytes = Files.readAllBytes(f.toPath());
-
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(fileBytes);
+        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes);
 
         assert friedmanResult != null;
 
-        Vigenere.crackText(fileBytes, friedmanResult.getLanguage(), friedmanResult.getKeyLength());
+        byte[] crackedBytes = Vigenere.crackText(encryptedFileBytes, friedmanResult);
 
-        assertTrue(false);
+        String finalString = new String(crackedBytes);
 
+        assertEquals("thisebook", finalString.substring(0, 9));
+    }
+
+    @Test
+    void shouldDecrypt() throws IOException, URISyntaxException {
+        byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher27.txt");
+
+        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes);
+
+        assert friedmanResult != null;
+
+        byte[] crackedBytes = Vigenere.crackText(encryptedFileBytes, friedmanResult);
+
+        String finalString = new String(crackedBytes);
+
+        assertEquals("biblia", finalString.substring(0,6));
     }
 
 

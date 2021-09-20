@@ -9,5 +9,6 @@ public class FriedmanDTO {
 
     private int keyLength;
     private String language;
+    private double ioc;
 
 }

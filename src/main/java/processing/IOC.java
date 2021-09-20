@@ -1,6 +1,6 @@
 package processing;
 
-import utils.FileReader;
+import utils.Reader;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +31,7 @@ public class IOC {
                 charOccurrences.put(letter, 1L);
         }
         charOccurrences.remove('\n');
+        charOccurrences.remove('\r');
         return charOccurrences.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue() * (e.getValue() - 1)))
                 .values().stream().reduce(Long::sum).map(value -> {
@@ -41,8 +42,8 @@ public class IOC {
 
     public static double computeIndexOfCoincidence(String filePath){
         try{
-            File textFile = FileReader.getFileFromResourcesFolder(filePath);
-            return computeIndexOfCoincidence(Files.readAllBytes(textFile.toPath()));
+            byte[] bytes = Reader.readFileFromResourcesFolder(filePath);
+            return computeIndexOfCoincidence(bytes);
         } catch (IOException | URISyntaxException e){
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
