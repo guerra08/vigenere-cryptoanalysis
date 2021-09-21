@@ -3,6 +3,7 @@ package integration;
 import cipher.Friedman;
 import cipher.Vigenere;
 import dto.FriedmanDTO;
+import dto.ResultDTO;
 import org.junit.jupiter.api.Test;
 import utils.Reader;
 
@@ -21,24 +22,24 @@ public class DecryptText {
 
         assert friedmanResult != null;
 
-        byte[] crackedBytes = Vigenere.crackText(encryptedFileBytes, friedmanResult);
+        ResultDTO result = Vigenere.crackText(encryptedFileBytes, friedmanResult);
 
-        String finalString = new String(crackedBytes);
+        String finalString = new String(result.getCrackedText());
 
         assertEquals("thisebook", finalString.substring(0, 9));
     }
 
     @Test
     void shouldDecrypt() throws IOException, URISyntaxException {
-        byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher27.txt");
+        byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher17.txt");
 
         FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes);
 
         assert friedmanResult != null;
 
-        byte[] crackedBytes = Vigenere.crackText(encryptedFileBytes, friedmanResult);
+        ResultDTO result = Vigenere.crackText(encryptedFileBytes, friedmanResult);
 
-        String finalString = new String(crackedBytes);
+        String finalString = new String(result.getCrackedText());
 
         assertEquals("biblia", finalString.substring(0,6));
     }
