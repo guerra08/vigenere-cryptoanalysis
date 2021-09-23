@@ -50,17 +50,15 @@ public class Friedman {
         for (Map.Entry<Integer, List<Double>> entry : iocByKeySize.entrySet()) {
             double sumOfIoc = entry.getValue().stream().mapToDouble(e -> e).sum();
             double avgIoc = sumOfIoc / entry.getKey();
-            for (Double value : entry.getValue()) {
-                double diffPtBr = IOC.getIndexByLanguage("pt-BR") - avgIoc;
-                double diffEnUs = IOC.getIndexByLanguage("en-US") - avgIoc;
-                if (diffPtBr <= THRESHOLD){
-                    language = "pt-BR";
-                    iocByKeySizes.put(entry.getKey(), value);
-                }
-                else if (diffEnUs <= THRESHOLD){
-                    language = "en-US";
-                    iocByKeySizes.put(entry.getKey(), value);
-                }
+            double diffPtBr = IOC.getIndexByLanguage("pt-BR") - avgIoc;
+            double diffEnUs = IOC.getIndexByLanguage("en-US") - avgIoc;
+            if (diffPtBr <= THRESHOLD){
+                language = "pt-BR";
+                iocByKeySizes.put(entry.getKey(), avgIoc);
+            }
+            else if (diffEnUs <= THRESHOLD){
+                language = "en-US";
+                iocByKeySizes.put(entry.getKey(), avgIoc);
             }
         }
         if(language != null){
