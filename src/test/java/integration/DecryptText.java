@@ -29,7 +29,6 @@ public class DecryptText {
         assertEquals("thisebook", finalString.substring(0, 9));
     }
 
-    //TODO: Fix this case
     @Test
     void shouldDecryptCipher5() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher5.txt");
@@ -90,7 +89,6 @@ public class DecryptText {
         assertEquals("biblia", finalString.substring(0,6));
     }
 
-    //TODO: Fix this case
     @Test
     void shouldDecryptCipher10() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher10.txt");
