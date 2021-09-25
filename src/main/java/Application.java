@@ -10,7 +10,7 @@ public class Application {
     public static void main(String[] args) {
         if(args.length == 0){
             System.out.println("Vigenere Cryptoanalysis - Bruno Guerra\n");
-            System.out.println("java -jar vigenere-cryptoanalysis.jar [file-name] [language] \n");
+            System.out.println("java -jar vigenere-cryptoanalysis.jar <file-name> [pt-BR|en-US] \n");
             return;
         }
         try{
