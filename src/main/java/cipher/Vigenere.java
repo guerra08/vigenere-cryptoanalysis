@@ -60,7 +60,8 @@ public class Vigenere {
             }
             byte mostCommonCharOfSubstr = General.getMostCommonCharInText(new String(Bytes.toArray(bytesOfSubstr)));
             int difference = mostCommonCharOfSubstr - baseChar;
-            key.append((char) ('a' + difference));
+            int keyChar = ('a' + difference < 'a') ? 'z' + difference + 1 : 'a' + difference;
+            key.append((char) keyChar);
             for (int j = i, k = 0; j < encText.length && k < bytesOfSubstr.size(); j+=keyLength, k++) {
                 int crackedInt = bytesOfSubstr.get(k) - difference;
                 if(crackedInt >= 'a' && crackedInt <= 'z')
