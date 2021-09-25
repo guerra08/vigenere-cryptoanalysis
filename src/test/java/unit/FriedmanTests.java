@@ -10,7 +10,7 @@ public class FriedmanTests {
 
     @Test
     void shouldResultInKeyLengthOf7ForEnUs(){
-        FriedmanDTO result = Friedman.computeFriedman("cifradoEnUs.txt", null);
+        FriedmanDTO result = Friedman.computeFriedman("cifradoEnUs.txt", "en-US");
 
         assert result != null;
 

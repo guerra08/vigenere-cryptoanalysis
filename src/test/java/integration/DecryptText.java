@@ -18,7 +18,7 @@ public class DecryptText {
     void shouldDecryptCifradoEnUs() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cifradoEnUs.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
+        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, "en-US");
 
         assert friedmanResult != null;
 
