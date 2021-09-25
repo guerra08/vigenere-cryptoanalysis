@@ -10,7 +10,7 @@ public class FriedmanTests {
 
     @Test
     void shouldResultInKeyLengthOf7ForEnUs(){
-        FriedmanDTO result = Friedman.computeFriedman("cifradoEnUs.txt");
+        FriedmanDTO result = Friedman.computeFriedman("cifradoEnUs.txt", null);
 
         assert result != null;
 
@@ -19,7 +19,7 @@ public class FriedmanTests {
 
     @Test
     void shouldResultInKeyLengthOf7ForPtBr(){
-        FriedmanDTO result = Friedman.computeFriedman("cifradoPtBr.txt");
+        FriedmanDTO result = Friedman.computeFriedman("cifradoPtBr.txt", null);
 
         assert result != null;
 
@@ -28,7 +28,7 @@ public class FriedmanTests {
 
     @Test
     void shouldResultInKeyLengthOf8ForCipher1(){
-        FriedmanDTO result = Friedman.computeFriedman("cipher1.txt");
+        FriedmanDTO result = Friedman.computeFriedman("cipher1.txt", null);
 
         assert result != null;
 
@@ -37,7 +37,7 @@ public class FriedmanTests {
 
     @Test
     void shouldResultInKeyLengthOf8ForCipher2(){
-        FriedmanDTO result = Friedman.computeFriedman("cipher2.txt");
+        FriedmanDTO result = Friedman.computeFriedman("cipher2.txt", null);
 
         assert result != null;
 

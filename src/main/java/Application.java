@@ -10,13 +10,14 @@ public class Application {
     public static void main(String[] args) {
         if(args.length == 0){
             System.out.println("Vigenere Cryptoanalysis - Bruno Guerra\n");
-            System.out.println("java -jar vigenere-cryptoanalysis.jar [file-name] \n");
+            System.out.println("java -jar vigenere-cryptoanalysis.jar [file-name] [language] \n");
             return;
         }
         try{
             String fileName = args[0];
             byte[] encryptedFileBytes = Reader.readFile(fileName);
-            FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes);
+            String language = args.length == 2 ? args[1] : null;
+            FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, language);
             if (friedmanResult != null) {
                 ResultDTO result = Vigenere.crackText(encryptedFileBytes, friedmanResult);
                 System.out.println("Cracked cipher for file: " + fileName);

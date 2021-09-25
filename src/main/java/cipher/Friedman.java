@@ -13,8 +13,9 @@ public class Friedman {
 
     private static final int MAX_LENGTH = 20;
     private static final double THRESHOLD = 0.005;
+    private static final String DEFAULT_LANGUAGE = "pt-BR";
 
-    public static FriedmanDTO computeFriedman(byte[] text) {
+    public static FriedmanDTO computeFriedman(byte[] text, String language) {
         List<Byte> substrBytes = new ArrayList<>();
         Map<Integer, List<Double>> iocByKeySize = new HashMap<>();
         int JUMP_INCREMENT = 2;
@@ -31,41 +32,35 @@ public class Friedman {
             iocByKeySize.put(JUMP_INCREMENT, indexesOfCoincidence);
             JUMP_INCREMENT++;
         }
-        return computeAndBuildFriedmanDto(iocByKeySize);
+        return computeAndBuildFriedmanDto(iocByKeySize, language);
     }
 
-    public static FriedmanDTO computeFriedman(String filePath) {
+    public static FriedmanDTO computeFriedman(String filePath, String language) {
         try {
             byte[] bytes = Reader.readFileFromResourcesFolder(filePath);
-            return computeFriedman(bytes);
+            return computeFriedman(bytes, language);
         } catch (IOException | URISyntaxException e) {
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
         return null;
     }
 
-    private static FriedmanDTO computeAndBuildFriedmanDto(Map<Integer, List<Double>> iocByKeySize) {
-        String language = null;
+    private static FriedmanDTO computeAndBuildFriedmanDto(Map<Integer, List<Double>> iocByKeySize, String findingFor) {
+        boolean matched = false;
+        String language = findingFor == null ? DEFAULT_LANGUAGE : findingFor;
         Map<Integer, Double> iocByKeySizes = new LinkedHashMap<>();
         for (Map.Entry<Integer, List<Double>> entry : iocByKeySize.entrySet()) {
             double sumOfIoc = entry.getValue().stream().mapToDouble(e -> e).sum();
             double avgIoc = sumOfIoc / entry.getKey();
-            double diffPtBr = IOC.getIndexByLanguage("pt-BR") - avgIoc;
-            double diffEnUs = IOC.getIndexByLanguage("en-US") - avgIoc;
-            if (diffPtBr <= THRESHOLD){
-                language = "pt-BR";
-                iocByKeySizes.put(entry.getKey(), avgIoc);
-            }
-            else if (diffEnUs <= THRESHOLD){
-                language = "en-US";
+            double diff = IOC.getIndexByLanguage(language) - avgIoc;
+            if (diff <= THRESHOLD){
+                matched = true;
                 iocByKeySizes.put(entry.getKey(), avgIoc);
             }
         }
-        if(language != null){
-            Map.Entry<Integer, Double> entry = iocByKeySizes.entrySet().iterator().next();
-            return new FriedmanDTO(entry.getKey(), language, entry.getValue());
-        }
-        return null;
+        if(!matched) return null;
+        Map.Entry<Integer, Double> entry = iocByKeySizes.entrySet().iterator().next();
+        return new FriedmanDTO(entry.getKey(), language, entry.getValue());
     }
 
 }

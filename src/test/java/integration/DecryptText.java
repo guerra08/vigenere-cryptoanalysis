@@ -18,7 +18,7 @@ public class DecryptText {
     void shouldDecryptCifradoEnUs() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cifradoEnUs.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes);
+        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
 
         assert friedmanResult != null;
 
@@ -33,7 +33,7 @@ public class DecryptText {
     void shouldDecryptCipher5() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher5.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes);
+        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
 
         assert friedmanResult != null;
 
@@ -48,7 +48,7 @@ public class DecryptText {
     void shouldDecryptCipher15() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher15.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes);
+        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
 
         assert friedmanResult != null;
 
@@ -63,7 +63,7 @@ public class DecryptText {
     void shouldDecryptCipher20() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher20.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes);
+        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
 
         assert friedmanResult != null;
 
@@ -78,7 +78,7 @@ public class DecryptText {
     void shouldDecryptCipher13() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher13.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes);
+        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
 
         assert friedmanResult != null;
 
@@ -93,7 +93,7 @@ public class DecryptText {
     void shouldDecryptCipher10() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher10.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes);
+        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
 
         assert friedmanResult != null;
 
