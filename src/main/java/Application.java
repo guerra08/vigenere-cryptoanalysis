@@ -11,7 +11,7 @@ public class Application {
         if(args.length == 0){
             System.out.println("Vigenere Cryptoanalysis - Bruno Guerra\n");
             System.out.println("java -jar vigenere-cryptoanalysis.jar <file-name> [pt-BR|en-US] [base-char (a-z)]");
-            System.out.println("Is a language is passed, please specify a base char. \n");
+            System.out.println("If a language is passed, please specify a base char. \n");
             System.out.println("Example: java -jar vigenere-cryptoanalysis.jar cipher1.txt pt-BR e");
             return;
         }
