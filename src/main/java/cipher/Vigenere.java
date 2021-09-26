@@ -10,6 +10,8 @@ import java.util.List;
 
 public class Vigenere {
 
+    private static final Character DEFAULT_BASE_CHAR = 'e';
+
     public static byte[] encryptText(byte[] rawText, byte[] key){
         byte[] generatedKey = generateKey(rawText.length, key);
         int size = rawText.length;
@@ -49,7 +51,8 @@ public class Vigenere {
         return decrypted;
     }
 
-    public static ResultDTO crackText(byte[] encText, FriedmanDTO friedman, char baseChar){
+    public static ResultDTO crackText(byte[] encText, FriedmanDTO friedman, Character baseChar){
+        char commonChar = baseChar == null ? DEFAULT_BASE_CHAR : baseChar.charValue();
         StringBuilder key = new StringBuilder();
         int keyLength = friedman.getKeyLength();
         byte[] crackedText = new byte[encText.length];
@@ -59,7 +62,7 @@ public class Vigenere {
                 bytesOfSubstr.add(encText[j]);
             }
             byte mostCommonCharOfSubstr = General.getMostCommonCharInText(new String(Bytes.toArray(bytesOfSubstr)));
-            int difference = mostCommonCharOfSubstr - baseChar;
+            int difference = mostCommonCharOfSubstr - commonChar;
             int keyChar = ('a' + difference < 'a') ? 'z' + difference + 1 : 'a' + difference;
             key.append((char) keyChar);
             for (int j = i, k = 0; j < encText.length && k < bytesOfSubstr.size(); j+=keyLength, k++) {
@@ -74,7 +77,7 @@ public class Vigenere {
     }
 
     public static ResultDTO crackText(byte[] encText, FriedmanDTO friedman){
-        return crackText(encText, friedman, 'e');
+        return crackText(encText, friedman, DEFAULT_BASE_CHAR);
     }
 
     private static byte[] generateKey(int size, byte[] key){
