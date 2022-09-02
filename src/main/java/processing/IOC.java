@@ -1,12 +1,13 @@
 package processing;
 
+import com.google.common.primitives.Bytes;
 import utils.Reader;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class IOC {
@@ -19,18 +20,12 @@ public class IOC {
     }
 
     public static double computeIndexOfCoincidence(byte[] textBytes) {
-        Map<Character, Long> charOccurrences = new HashMap<>();
         long textSize = textBytes.length;
-        for (byte b : textBytes) {
-            char letter = (char) b;
-            if (charOccurrences.containsKey(letter))
-                charOccurrences.put(letter, charOccurrences.get(letter) + 1);
-            else
-                charOccurrences.put(letter, 1L);
-        }
-        charOccurrences.remove('\n');
-        charOccurrences.remove('\r');
-        return charOccurrences.entrySet().stream()
+        var occurrences = Bytes.asList(textBytes).stream()
+            .map(b -> (char)b.byteValue())
+            .filter(c -> !c.equals('\n') && !c.equals('\r'))
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        return occurrences.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue() * (e.getValue() - 1)))
                 .values().stream().reduce(Long::sum).map(value -> {
                     long denominator = textSize * (textSize - 1);

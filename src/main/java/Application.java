@@ -1,9 +1,10 @@
 import cipher.Friedman;
 import cipher.Vigenere;
-import dto.FriedmanDTO;
-import dto.ResultDTO;
+import model.ResultData;
 import utils.Reader;
 import utils.Writer;
+
+import java.io.IOException;
 
 public class Application {
 
@@ -20,15 +21,19 @@ public class Application {
             byte[] encryptedFileBytes = Reader.readFile(fileName);
             String language = args.length == 3 ? args[1] : null;
             Character baseChar = args.length == 3 ? args[2].charAt(0) : null;
-            FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, language);
-            if (friedmanResult != null) {
-                ResultDTO result = Vigenere.crackText(encryptedFileBytes, friedmanResult, baseChar);
-                System.out.println("Cracked cipher for file: " + fileName);
-                System.out.println("Language: " + friedmanResult.getLanguage());
-                System.out.println("Key: " + result.getKey());
-                Writer.writeToFile(result.getCrackedText(), "output.txt");
-                System.out.println("Clear text written on output.txt");
-            }
+            Friedman.computeFriedman(encryptedFileBytes, language)
+                .ifPresent(friedmanResult -> {
+                    ResultData result = Vigenere.crackText(encryptedFileBytes, friedmanResult, baseChar);
+                    System.out.println("Cracked cipher for file: " + fileName);
+                    System.out.println("Language: " + friedmanResult.language());
+                    System.out.println("Key: " + result.key());
+                    try {
+                        Writer.writeToFile(result.crackedText(), "output.txt");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Clear text written on output.txt");
+                });
         } catch (Exception e){
             System.err.println(e.getMessage());
         }

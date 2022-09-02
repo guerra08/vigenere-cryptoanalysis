@@ -2,8 +2,6 @@ package integration;
 
 import cipher.Friedman;
 import cipher.Vigenere;
-import dto.FriedmanDTO;
-import dto.ResultDTO;
 import org.junit.jupiter.api.Test;
 import utils.Reader;
 
@@ -18,13 +16,13 @@ public class DecryptText {
     void shouldDecryptCifradoEnUs() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cifradoEnUs.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, "en-US");
+        var friedmanResult = Friedman.computeFriedman(encryptedFileBytes, "en-US");
 
-        assert friedmanResult != null;
+        assertTrue(friedmanResult.isPresent());
 
-        ResultDTO result = Vigenere.crackText(encryptedFileBytes, friedmanResult);
+        var result = Vigenere.crackText(encryptedFileBytes, friedmanResult.get());
 
-        String finalString = new String(result.getCrackedText());
+        var finalString = new String(result.crackedText());
 
         assertEquals("thisebook", finalString.substring(0, 9));
     }
@@ -33,13 +31,13 @@ public class DecryptText {
     void shouldDecryptCipher5() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher5.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
+        var friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
 
-        assert friedmanResult != null;
+        assertTrue(friedmanResult.isPresent());
 
-        ResultDTO result = Vigenere.crackText(encryptedFileBytes, friedmanResult);
+        var result = Vigenere.crackText(encryptedFileBytes, friedmanResult.get());
 
-        String finalString = new String(result.getCrackedText());
+        var finalString = new String(result.crackedText());
 
         assertEquals("biblia", finalString.substring(0,6));
     }
@@ -48,13 +46,13 @@ public class DecryptText {
     void shouldDecryptCipher15() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher15.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
+        var friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
 
-        assert friedmanResult != null;
+        assertTrue(friedmanResult.isPresent());
 
-        ResultDTO result = Vigenere.crackText(encryptedFileBytes, friedmanResult);
+        var result = Vigenere.crackText(encryptedFileBytes, friedmanResult.get());
 
-        String finalString = new String(result.getCrackedText());
+        var finalString = new String(result.crackedText());
 
         assertEquals("biblia", finalString.substring(0,6));
     }
@@ -63,13 +61,13 @@ public class DecryptText {
     void shouldDecryptCipher20() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher20.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
+        var friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
 
-        assert friedmanResult != null;
+        assertTrue(friedmanResult.isPresent());
 
-        ResultDTO result = Vigenere.crackText(encryptedFileBytes, friedmanResult);
+        var result = Vigenere.crackText(encryptedFileBytes, friedmanResult.get());
 
-        String finalString = new String(result.getCrackedText());
+        var finalString = new String(result.crackedText());
 
         assertEquals("biblia", finalString.substring(0,6));
     }
@@ -78,13 +76,13 @@ public class DecryptText {
     void shouldDecryptCipher13() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher13.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
+        var friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
 
-        assert friedmanResult != null;
+        assertTrue(friedmanResult.isPresent());
 
-        ResultDTO result = Vigenere.crackText(encryptedFileBytes, friedmanResult);
+        var result = Vigenere.crackText(encryptedFileBytes, friedmanResult.get());
 
-        String finalString = new String(result.getCrackedText());
+        var finalString = new String(result.crackedText());
 
         assertEquals("biblia", finalString.substring(0,6));
     }
@@ -93,13 +91,13 @@ public class DecryptText {
     void shouldDecryptCipher10() throws IOException, URISyntaxException {
         byte[] encryptedFileBytes = Reader.readFileFromResourcesFolder("cipher10.txt");
 
-        FriedmanDTO friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
+        var friedmanResult = Friedman.computeFriedman(encryptedFileBytes, null);
 
-        assert friedmanResult != null;
+        assertTrue(friedmanResult.isPresent());
 
-        ResultDTO result = Vigenere.crackText(encryptedFileBytes, friedmanResult);
+        var result = Vigenere.crackText(encryptedFileBytes, friedmanResult.get());
 
-        String finalString = new String(result.getCrackedText());
+        var finalString = new String(result.crackedText());
 
         assertEquals("biblia", finalString.substring(0,6));
     }

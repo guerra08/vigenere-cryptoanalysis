@@ -1,8 +1,8 @@
 package cipher;
 
 import com.google.common.primitives.Bytes;
-import dto.FriedmanDTO;
-import dto.ResultDTO;
+import model.FriedmanData;
+import model.ResultData;
 import processing.General;
 
 import java.util.ArrayList;
@@ -51,10 +51,10 @@ public class Vigenere {
         return decrypted;
     }
 
-    public static ResultDTO crackText(byte[] encText, FriedmanDTO friedman, Character baseChar){
+    public static ResultData crackText(byte[] encText, FriedmanData friedman, Character baseChar){
         char commonChar = baseChar == null ? DEFAULT_BASE_CHAR : baseChar.charValue();
         StringBuilder key = new StringBuilder();
-        int keyLength = friedman.getKeyLength();
+        int keyLength = friedman.keyLength();
         byte[] crackedText = new byte[encText.length];
         for (int i = 0; i < keyLength; i++) {
             List<Byte> bytesOfSubstr = new ArrayList<>();
@@ -73,10 +73,10 @@ public class Vigenere {
                     crackedText[j] = (byte) (crackedInt + 'z' - 'a' + 1);
             }
         }
-        return new ResultDTO(key.toString(), crackedText);
+        return new ResultData(key.toString(), crackedText);
     }
 
-    public static ResultDTO crackText(byte[] encText, FriedmanDTO friedman){
+    public static ResultData crackText(byte[] encText, FriedmanData friedman){
         return crackText(encText, friedman, DEFAULT_BASE_CHAR);
     }
 

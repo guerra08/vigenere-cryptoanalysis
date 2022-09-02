@@ -1,7 +1,7 @@
 package cipher;
 
 import com.google.common.primitives.Bytes;
-import dto.FriedmanDTO;
+import model.FriedmanData;
 import processing.IOC;
 import utils.Reader;
 
@@ -15,7 +15,7 @@ public class Friedman {
     private static final double THRESHOLD = 0.005;
     private static final String DEFAULT_LANGUAGE = "pt-BR";
 
-    public static FriedmanDTO computeFriedman(byte[] text, String language) {
+    public static Optional<FriedmanData> computeFriedman(byte[] text, String language) {
         List<Byte> substrBytes = new ArrayList<>();
         Map<Integer, List<Double>> iocByKeySize = new HashMap<>();
         int JUMP_INCREMENT = 2;
@@ -32,21 +32,21 @@ public class Friedman {
             iocByKeySize.put(JUMP_INCREMENT, indexesOfCoincidence);
             JUMP_INCREMENT++;
         }
-        return computeAndBuildFriedmanDto(iocByKeySize, language);
+        return computeFriedman(iocByKeySize, language);
     }
 
-    public static FriedmanDTO computeFriedman(String filePath, String language) {
+    public static Optional<FriedmanData> computeFriedman(String filePath, String language) {
         try {
             byte[] bytes = Reader.readFileFromResourcesFolder(filePath);
             return computeFriedman(bytes, language);
         } catch (IOException | URISyntaxException e) {
-            System.err.println(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
-        return null;
+        return Optional.empty();
     }
 
-    private static FriedmanDTO computeAndBuildFriedmanDto(Map<Integer, List<Double>> iocByKeySize, String findingFor) {
-        boolean matched = false;
+    private static Optional<FriedmanData> computeFriedman(Map<Integer, List<Double>> iocByKeySize, String findingFor) {
+        var matched = false;
         String language = findingFor == null ? DEFAULT_LANGUAGE : findingFor;
         Map<Integer, Double> iocByKeySizes = new LinkedHashMap<>();
         for (Map.Entry<Integer, List<Double>> entry : iocByKeySize.entrySet()) {
@@ -58,9 +58,9 @@ public class Friedman {
                 iocByKeySizes.put(entry.getKey(), avgIoc);
             }
         }
-        if(!matched) return null;
-        Map.Entry<Integer, Double> entry = iocByKeySizes.entrySet().iterator().next();
-        return new FriedmanDTO(entry.getKey(), language, entry.getValue());
+        if(!matched) return Optional.empty();
+        var entry = iocByKeySizes.entrySet().iterator().next();
+        return Optional.of(new FriedmanData(entry.getKey(), language, entry.getValue()));
     }
 
 }
